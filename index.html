@@ -2945,7 +2945,14 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   }
   function xsRowsOf(ws){
     if(!ws) return [];
-    return XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:null, blankrows:true});
+    // Força a leitura a começar sempre em A1: se a coluna A estiver vazia em
+    // toda a planilha, o !ref calculado pelo Excel/SheetJS começa em B1, e
+    // sheet_to_json({header:1}) devolveria arrays já deslocados uma coluna
+    // para a esquerda — quebrando silenciosamente todos os índices fixos
+    // (xsCell) usados abaixo para ler nome/KM Real/data.
+    var range = XLSX.utils.decode_range(ws['!ref'] || 'A1');
+    range.s.r = 0; range.s.c = 0;
+    return XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:null, blankrows:true, range: range});
   }
   function xsPad2(n){ return (n<10?"0":"")+n; }
   function xsFmtDate(v){
