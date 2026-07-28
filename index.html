@@ -170,6 +170,48 @@
     /* Selo de geração na faixa azul */
     .meta-block { display: none; }
 
+    /* Frequência de atualização dos dados */
+    .update-policy {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 48px;
+      background: #fff8e8;
+      border-bottom: 1px solid #ead7a7;
+      color: #4d4638;
+    }
+    .update-policy-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+      border-radius: 50%;
+      background: #f3a33b;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .update-policy-copy {
+      display: flex;
+      align-items: baseline;
+      gap: 8px 18px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .update-policy-title {
+      color: #243b53;
+      font-size: 12.5px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .update-policy-item {
+      font-size: 12px;
+      color: #536477;
+    }
+    .update-policy-item b { color: #243b53; }
+
     /* ── NAV DE PACOTES ── */
     /* ── ABAS PRINCIPAIS ── */
     .main-tabs {
@@ -207,6 +249,40 @@
       box-shadow: 0 2px 8px rgba(31,78,121,.25);
     }
     .main-tab.active .tnum { background: var(--orange); color: #fff; }
+    .update-cadence {
+      display: inline-flex;
+      align-items: center;
+      min-height: 18px;
+      padding: 1px 7px;
+      border: 1px solid #c4d2df;
+      border-radius: 10px;
+      background: #eef3f8;
+      color: #536b82;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .update-cadence.daily {
+      border-color: #acd7bd;
+      background: #edf8f1;
+      color: #257044;
+    }
+    .main-tab.active .update-cadence {
+      border-color: rgba(255,255,255,.38);
+      background: rgba(255,255,255,.14);
+      color: #fff;
+    }
+    @media (max-width: 720px) {
+      .update-policy { align-items: flex-start; padding: 10px 20px; }
+      .update-policy-copy { display: grid; gap: 3px; }
+      .update-policy-title { white-space: normal; }
+      .main-tabs { padding: 12px 20px; gap: 8px; }
+      .main-tab { width: 100%; justify-content: flex-start; }
+      .main-tab .update-cadence { margin-left: auto; }
+    }
     .tab-inner { padding: 24px 48px; }
     /* Sub-navegação de SERVIÇOS NOTÁVEIS (dentro do Retigráfico) */
     .serv-block { padding: 10px 0 30px; border-top: 2px solid var(--border); margin-top: 8px; }
@@ -976,13 +1052,22 @@
     </div>
   </header>
 
+  <aside class="update-policy" role="note" aria-label="Frequência de atualização dos dados">
+    <span class="update-policy-icon" aria-hidden="true">i</span>
+    <div class="update-policy-copy">
+      <span class="update-policy-title">Frequência das atualizações</span>
+      <span class="update-policy-item"><b>Retigráfico:</b> atualização diária</span>
+      <span class="update-policy-item"><b>Demais informações:</b> atualização semanal, às terças-feiras</span>
+    </div>
+  </aside>
+
   <!-- ABAS PRINCIPAIS -->
   <nav class="main-tabs" id="main-tabs">
-    <button class="main-tab" data-tab="curvas"><span class="tnum">1</span> Curva física e financeira</button>
-    <button class="main-tab" data-tab="recursos"><span class="tnum">2</span> Recursos de mão de obra e equipamentos</button>
-    <button class="main-tab active" data-tab="retigrafico"><span class="tnum">3</span> Retigráfico</button>
-    <button class="main-tab" data-tab="servicos"><span class="tnum">4</span> Serviços Notáveis</button>
-    <button class="main-tab" data-tab="materiais"><span class="tnum">5</span> Materiais</button>
+    <button class="main-tab" data-tab="curvas"><span class="tnum">1</span> Curva física e financeira <span class="update-cadence">Semanal · terça</span></button>
+    <button class="main-tab" data-tab="recursos"><span class="tnum">2</span> Recursos de mão de obra e equipamentos <span class="update-cadence">Semanal · terça</span></button>
+    <button class="main-tab active" data-tab="retigrafico"><span class="tnum">3</span> Retigráfico <span class="update-cadence daily">Diária</span></button>
+    <button class="main-tab" data-tab="servicos"><span class="tnum">4</span> Serviços Notáveis <span class="update-cadence">Semanal · terça</span></button>
+    <button class="main-tab" data-tab="materiais"><span class="tnum">5</span> Materiais <span class="update-cadence">Semanal · terça</span></button>
   </nav>
 
   <!-- SEÇÃO 1: CURVAS (lado a lado) -->
