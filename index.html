@@ -941,6 +941,158 @@
       animation: barGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
+    /* ─────────── PLANO DE AÇÃO ─────────── */
+    .plan-shell { display: grid; gap: 18px; }
+    .plan-heading {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .plan-heading-copy h2 {
+      color: var(--blue-dark); font-family: 'Bebas Neue', sans-serif;
+      font-size: 27px; font-weight: 400; letter-spacing: .6px; margin: 0;
+    }
+    .plan-heading-copy p { color: var(--text-muted); font-size: 12.5px; margin: 3px 0 0; }
+    .plan-meeting {
+      background: #eef4fb; border: 1px solid #c9d8e8; border-radius: 10px;
+      color: #44566b; padding: 9px 13px; font-size: 11.5px;
+    }
+    .plan-meeting b { color: var(--blue-dark); font-family: 'DM Mono', monospace; }
+    .plan-subtabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .plan-subtab {
+      border: 1px solid var(--border); border-radius: 22px; background: #fff;
+      color: #44566b; cursor: pointer; font: 600 12.5px 'DM Sans', sans-serif;
+      min-height: 42px; padding: 8px 16px; transition: border-color .15s, background .15s, color .15s;
+    }
+    .plan-subtab:hover, .plan-subtab:focus-visible { border-color: #9bb5cf; outline: none; }
+    .plan-subtab.active {
+      background: var(--blue-dark); border-color: var(--blue-dark); color: #fff;
+    }
+    .plan-subtab[data-plan-view="attention"].active {
+      background: #b96800; border-color: #b96800;
+    }
+    .plan-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .plan-kpi {
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      padding: 13px 15px; min-height: 72px;
+    }
+    .plan-kpi span {
+      display: block; color: var(--text-muted); font-size: 10px; font-weight: 700;
+      letter-spacing: .45px; text-transform: uppercase;
+    }
+    .plan-kpi strong {
+      display: block; color: var(--blue-dark); font-family: 'DM Mono', monospace;
+      font-size: 24px; line-height: 1.25; margin-top: 4px;
+    }
+    .plan-kpi.warn strong { color: #a85d00; }
+    .plan-kpi.danger strong { color: #b42318; }
+    .plan-kpi.success strong { color: #247247; }
+    .plan-controls {
+      align-items: end; background: #f6f8fb; border: 1px solid var(--border);
+      border-radius: 12px; display: grid; gap: 10px;
+      grid-template-columns: minmax(220px, 1.5fr) repeat(3, minmax(135px, .7fr)) auto;
+      padding: 12px;
+    }
+    .plan-control { display: grid; gap: 4px; }
+    .plan-control label {
+      color: #627386; font-size: 9.5px; font-weight: 700;
+      letter-spacing: .4px; text-transform: uppercase;
+    }
+    .plan-control input, .plan-control select {
+      background: #fff; border: 1px solid #cbd7e2; border-radius: 7px;
+      color: #233548; font: 12px 'DM Sans', sans-serif; min-height: 40px; padding: 8px 10px;
+    }
+    .plan-control input:focus, .plan-control select:focus {
+      border-color: #3578bc; box-shadow: 0 0 0 3px rgba(53,120,188,.13); outline: none;
+    }
+    .plan-toggle {
+      align-items: center; color: #44566b; cursor: pointer; display: flex;
+      font-size: 11.5px; gap: 7px; min-height: 40px; padding: 0 4px;
+    }
+    .plan-toggle input { accent-color: #3578bc; width: 17px; height: 17px; }
+    .attention-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .attention-card {
+      background: #fff; border: 1px solid #ead7b8; border-left: 4px solid #d97706;
+      border-radius: 10px; display: grid; gap: 12px; padding: 15px 17px;
+    }
+    .attention-card h3 { color: #6d3d00; font-size: 15px; margin: 0; }
+    .attention-block small {
+      color: #9a6b28; display: block; font-size: 9px; font-weight: 700;
+      letter-spacing: .5px; margin-bottom: 3px; text-transform: uppercase;
+    }
+    .attention-block p { color: #35485b; font-size: 12px; line-height: 1.55; margin: 0; }
+    .plan-meta { align-items: center; display: flex; flex-wrap: wrap; gap: 7px 12px; }
+    .plan-meta-item { color: #657588; font-size: 10.5px; }
+    .plan-status {
+      border: 1px solid #cbd7e2; border-radius: 12px; color: #52667a;
+      display: inline-flex; font-size: 9.5px; font-weight: 700; padding: 3px 8px;
+      text-transform: uppercase;
+    }
+    .plan-status.andamento { background: #edf4fb; border-color: #bad0e4; color: #225f97; }
+    .plan-status.concluido { background: #edf8f1; border-color: #b8ddc6; color: #247247; }
+    .plan-status.impedido, .plan-status.atrasado { background: #fff0f0; border-color: #efb7b7; color: #a52020; }
+    .plan-status.nao-iniciado { background: #f5f5f5; border-color: #d6d6d6; color: #606a74; }
+    .coord-table-wrap { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; }
+    .coord-table { border-collapse: collapse; min-width: 960px; width: 100%; }
+    .coord-table th {
+      background: #edf4fb; color: #1f4e79; font-size: 9.5px; letter-spacing: .4px;
+      padding: 10px; text-align: left; text-transform: uppercase;
+    }
+    .coord-table td {
+      border-top: 1px solid #e2e8ef; color: #35485b; font-size: 11px;
+      padding: 10px; text-align: left; vertical-align: top;
+    }
+    .coord-table tr.is-overdue td { background: #fff7f7; }
+    .coord-table .tema { color: #203b57; font-weight: 700; min-width: 155px; }
+    .coord-details summary { color: #2b679f; cursor: pointer; font-weight: 600; }
+    .coord-details p { line-height: 1.5; margin: 8px 0 0; white-space: pre-line; }
+    .coord-mobile { display: none; gap: 10px; }
+    .coord-mobile-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      display: grid; gap: 9px; padding: 14px;
+    }
+    .coord-mobile-card.is-overdue { border-left: 4px solid #c83232; }
+    .plan-empty {
+      background: #f7f9fb; border: 1px dashed #c8d3df; border-radius: 10px;
+      color: #627386; font-size: 12.5px; padding: 28px; text-align: center;
+    }
+    .password-overlay {
+      align-items: center; background: rgba(17,31,48,.72); display: none;
+      inset: 0; justify-content: center; padding: 20px; position: fixed; z-index: 3000;
+    }
+    .password-overlay.open { display: flex; }
+    .password-dialog {
+      background: #fff; border-radius: 12px; max-width: 390px; padding: 24px; width: 100%;
+    }
+    .password-dialog h2 { color: var(--blue-dark); font-size: 19px; margin: 0 0 5px; }
+    .password-dialog p { color: #627386; font-size: 12.5px; line-height: 1.5; margin: 0 0 15px; }
+    .password-dialog label { color: #40566d; display: block; font-size: 11px; font-weight: 700; margin-bottom: 5px; }
+    .password-dialog input {
+      border: 1px solid #bccbd9; border-radius: 7px; font: 16px 'DM Sans', sans-serif;
+      min-height: 44px; padding: 9px 11px; width: 100%;
+    }
+    .password-dialog input:focus { border-color: #3578bc; box-shadow: 0 0 0 3px rgba(53,120,188,.14); outline: none; }
+    .password-error { color: #b42318; font-size: 11px; min-height: 17px; padding-top: 4px; }
+    .password-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+    .password-actions button {
+      border: 1px solid #c3d0dc; border-radius: 7px; cursor: pointer;
+      font: 600 12px 'DM Sans', sans-serif; min-height: 40px; padding: 8px 14px;
+    }
+    .password-cancel { background: #fff; color: #44566b; }
+    .password-submit { background: var(--blue-dark); border-color: var(--blue-dark) !important; color: #fff; }
+    @media (max-width: 980px) {
+      .plan-controls { grid-template-columns: 1fr 1fr; }
+      .plan-control:first-child { grid-column: 1 / -1; }
+      .attention-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      #tab-plano .tab-inner { padding: 20px; }
+      .plan-kpis { grid-template-columns: 1fr 1fr; }
+      .plan-controls { grid-template-columns: 1fr; }
+      .plan-control:first-child { grid-column: auto; }
+      .coord-table-wrap { display: none; }
+      .coord-mobile { display: grid; }
+    }
+
     /* ─────────── IMPRESSÃO / PDF ─────────── */
     @media print {
       [style*="position:fixed"] { display: none !important; }
@@ -949,7 +1101,7 @@
       /* Todas as abas visíveis na impressão, cada uma em sua página */
       .main-tabs { display: none !important; }
       .tab-pane { display: block !important; }
-      #tab-recursos, #tab-retigrafico, #tab-servicos, #tab-materiais { page-break-before: always; }
+      #tab-recursos, #tab-retigrafico, #tab-servicos, #tab-materiais, #tab-plano { page-break-before: always; }
       .res-grid { grid-template-columns: 1fr 1fr !important; }
       /* Header compacto na impressão (recupera o espaço do bloco de contrato
          para o unifilar do P01 caber na mesma página dos cards) */
@@ -1068,6 +1220,7 @@
     <button class="main-tab active" data-tab="retigrafico"><span class="tnum">3</span> Retigráfico <span class="update-cadence daily">Diária</span></button>
     <button class="main-tab" data-tab="servicos"><span class="tnum">4</span> Serviços Notáveis <span class="update-cadence">Semanal · terça</span></button>
     <button class="main-tab" data-tab="materiais"><span class="tnum">5</span> Materiais <span class="update-cadence">Semanal · terça</span></button>
+    <button class="main-tab" data-tab="plano"><span class="tnum">6</span> Plano de Ação <span class="update-cadence">Semanal · terça</span></button>
   </nav>
 
   <!-- SEÇÃO 1: CURVAS (lado a lado) -->
@@ -1118,15 +1271,78 @@
     <section class="materials" id="materials-section"></section>
   </section>
 
+  <!-- SEÇÃO 6: PLANO DE AÇÃO -->
+  <section class="tab-pane" id="tab-plano" style="display:none">
+    <div class="tab-inner">
+      <div class="plan-shell">
+        <div class="plan-heading">
+          <div class="plan-heading-copy">
+            <h2>PLANO DE AÇÃO</h2>
+            <p>Pontos de atenção contratuais e ata de responsabilidades da Coordenação Super.</p>
+          </div>
+          <div class="plan-meeting">Última reunião: <b id="plan-meeting-date">—</b></div>
+        </div>
+
+        <nav class="plan-subtabs" aria-label="Seções do Plano de Ação">
+          <button class="plan-subtab active" type="button" data-plan-view="attention">Contrato Consórcio CMC x SOMAFEL</button>
+          <button class="plan-subtab" type="button" data-plan-view="coord">Coordenação Super</button>
+        </nav>
+
+        <div class="plan-kpis" aria-label="Indicadores do Plano de Ação">
+          <div class="plan-kpi"><span>Abertos</span><strong id="plan-kpi-open">0</strong></div>
+          <div class="plan-kpi warn"><span>Impedidos</span><strong id="plan-kpi-blocked">0</strong></div>
+          <div class="plan-kpi danger"><span>Atrasados</span><strong id="plan-kpi-overdue">0</strong></div>
+          <div class="plan-kpi success"><span>Concluídos</span><strong id="plan-kpi-done">0</strong></div>
+        </div>
+
+        <div class="plan-controls">
+          <div class="plan-control">
+            <label for="plan-search">Pesquisar</label>
+            <input id="plan-search" type="search" placeholder="Tema, ação, contexto ou observação">
+          </div>
+          <div class="plan-control">
+            <label for="plan-status-filter">Status</label>
+            <select id="plan-status-filter"><option value="">Todos os status</option></select>
+          </div>
+          <div class="plan-control">
+            <label for="plan-owner-filter">Responsável</label>
+            <select id="plan-owner-filter"><option value="">Todos os responsáveis</option></select>
+          </div>
+          <div class="plan-control">
+            <label for="plan-theme-filter">Tema</label>
+            <select id="plan-theme-filter"><option value="">Todos os temas</option></select>
+          </div>
+          <label class="plan-toggle"><input id="plan-show-done" type="checkbox"> Mostrar concluídos</label>
+        </div>
+
+        <div id="plan-content" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="footer-inner">
-      <span>Fonte: 14_07.xlsx</span>
+      <span>Fonte: Modelo Acompanhamento Super - FINAL.xlsx</span>
       <span id="footer-date"></span>
     </div>
     <div class="footer-band"></div>
   </footer>
 
   <div class="tooltip" id="tooltip"></div>
+
+  <div class="password-overlay" id="plan-password-overlay" role="dialog" aria-modal="true" aria-labelledby="plan-password-title">
+    <div class="password-dialog">
+      <h2 id="plan-password-title">Acesso ao Plano de Ação</h2>
+      <p>Esta seção contém informações de acompanhamento contratual. Informe a senha para continuar.</p>
+      <label for="plan-password-input">Senha</label>
+      <input id="plan-password-input" type="password" autocomplete="off">
+      <div class="password-error" id="plan-password-error" role="alert"></div>
+      <div class="password-actions">
+        <button class="password-cancel" id="plan-password-cancel" type="button">Cancelar</button>
+        <button class="password-submit" id="plan-password-submit" type="button">Acessar</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Painel de detalhe FIXO (abre ao clicar num mês) -->
   <div class="detail-overlay" id="detail-overlay">
@@ -1367,6 +1583,10 @@
   // DATAS
   // ============================================================
   let DADOS_DATA = '13/07/2026';   // data de atualização da fonte (aba ATIVIDADES)
+  let PLANO_ATENCAO_DATA = [];
+  let PLANO_COORD_DATA = [];
+  let PLANO_ATENCAO_REUNIAO = '—';
+  let PLANO_COORD_REUNIAO = '—';
   const GERADO_EM  = '14/07/2026 18:12';   // carimbo fixo de geração (preenchido pelo gerador)
   // Avanço oficial do projeto — lido direto da aba ATIVIDADES (F1 e K1)
   const AVANCO_REAL_PROJ = 3.92;   // % real do projeto
@@ -2291,26 +2511,229 @@
   function hideTooltip() { tooltipEl.classList.remove('visible'); }
 
   // ============================================================
-  // ABAS PRINCIPAIS (Curvas / Recursos / Retigráfico / Serviços / Materiais)
+  // PLANO DE AÇÃO
+  // ============================================================
+  var PLAN_VIEW = 'attention';
+
+  function planNorm(v) {
+    return (v || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
+  function planSafe(v) {
+    return (v == null ? '' : String(v))
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  }
+  function planRows() {
+    return PLAN_VIEW === 'attention' ? PLANO_ATENCAO_DATA : PLANO_COORD_DATA;
+  }
+  function planIsOverdue(item) {
+    if (planNorm(item.status) === 'concluido' || !item.prazoSerial) return false;
+    var todaySerial = Math.floor(Date.now() / 86400000) + 25569;
+    return Number(item.prazoSerial) < todaySerial;
+  }
+  function planStatusClass(status) {
+    var n = planNorm(status);
+    if (n === 'em andamento') return 'andamento';
+    if (n === 'nao iniciado') return 'nao-iniciado';
+    if (n === 'concluido') return 'concluido';
+    if (n === 'impedido') return 'impedido';
+    return '';
+  }
+  function planStatusHtml(item) {
+    var html = '<span class="plan-status '+planStatusClass(item.status)+'">'+planSafe(item.status || 'A definir')+'</span>';
+    if (planIsOverdue(item)) html += ' <span class="plan-status atrasado">Atrasado</span>';
+    return html;
+  }
+  function planOptionHtml(values, placeholder) {
+    var sorted = values.filter(Boolean).sort(function(a,b){ return String(a).localeCompare(String(b), 'pt-BR'); });
+    return '<option value="">'+planSafe(placeholder)+'</option>' + sorted.map(function(v){
+      return '<option value="'+planSafe(v)+'">'+planSafe(v)+'</option>';
+    }).join('');
+  }
+  function planBindControls() {
+    var ids = ['plan-search','plan-status-filter','plan-owner-filter','plan-theme-filter','plan-show-done'];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && !el.dataset.planBound) {
+        el.addEventListener(el.tagName === 'INPUT' && el.type === 'search' ? 'input' : 'change', renderPlanoAcao);
+        el.dataset.planBound = '1';
+      }
+    });
+    document.querySelectorAll('.plan-subtab').forEach(function(btn){
+      if (btn.dataset.planBound) return;
+      btn.addEventListener('click', function(){
+        PLAN_VIEW = btn.getAttribute('data-plan-view');
+        document.querySelectorAll('.plan-subtab').forEach(function(b){ b.classList.toggle('active', b === btn); });
+        ['plan-search','plan-status-filter','plan-owner-filter','plan-theme-filter'].forEach(function(id){
+          var el = document.getElementById(id); if (el) el.value = '';
+        });
+        renderPlanoAcao(true);
+      });
+      btn.dataset.planBound = '1';
+    });
+  }
+  function planUpdateFilters(rows, resetOptions) {
+    var statusEl = document.getElementById('plan-status-filter');
+    var ownerEl = document.getElementById('plan-owner-filter');
+    var themeEl = document.getElementById('plan-theme-filter');
+    if (!statusEl || !ownerEl || !themeEl) return;
+    var oldStatus = resetOptions ? '' : statusEl.value;
+    var oldOwner = resetOptions ? '' : ownerEl.value;
+    var oldTheme = resetOptions ? '' : themeEl.value;
+    var unique = function(key){
+      return rows.map(function(r){return r[key];}).filter(function(v,i,a){return v && a.indexOf(v) === i;});
+    };
+    statusEl.innerHTML = planOptionHtml(unique('status'), 'Todos os status');
+    ownerEl.innerHTML = planOptionHtml(unique('responsavel'), 'Todos os responsáveis');
+    themeEl.innerHTML = planOptionHtml(unique('tema'), 'Todos os temas');
+    statusEl.value = oldStatus; ownerEl.value = oldOwner; themeEl.value = oldTheme;
+  }
+  function planFilteredRows(rows) {
+    var search = planNorm(document.getElementById('plan-search').value);
+    var status = document.getElementById('plan-status-filter').value;
+    var owner = document.getElementById('plan-owner-filter').value;
+    var theme = document.getElementById('plan-theme-filter').value;
+    var showDone = document.getElementById('plan-show-done').checked;
+    return rows.filter(function(item){
+      if (!showDone && planNorm(item.status) === 'concluido') return false;
+      if (status && item.status !== status) return false;
+      if (owner && item.responsavel !== owner) return false;
+      if (theme && item.tema !== theme) return false;
+      if (search) {
+        var haystack = planNorm([item.tema,item.contexto,item.ponto,item.acao,item.encaminhamento,item.observacoes,item.responsavel].join(' '));
+        if (haystack.indexOf(search) === -1) return false;
+      }
+      return true;
+    });
+  }
+  function planRenderAttention(rows) {
+    if (!rows.length) return '<div class="plan-empty">Nenhum ponto de atenção corresponde aos filtros selecionados.</div>';
+    return '<div class="attention-grid">'+rows.map(function(item){
+      return '<article class="attention-card">'+
+        '<div><h3>'+planSafe(item.tema)+'</h3></div>'+
+        '<div class="attention-block"><small>Ponto de atenção</small><p>'+planSafe(item.ponto)+'</p></div>'+
+        '<div class="attention-block"><small>Encaminhamento</small><p>'+planSafe(item.encaminhamento)+'</p></div>'+
+        '<div class="plan-meta">'+planStatusHtml(item)+
+          '<span class="plan-meta-item"><b>Responsável:</b> '+planSafe(item.responsavel || 'A definir')+'</span>'+
+          '<span class="plan-meta-item"><b>Prazo:</b> '+planSafe(item.prazo || 'A definir')+'</span>'+
+        '</div>'+
+        (item.observacoes ? '<div class="attention-block"><small>Observações</small><p>'+planSafe(item.observacoes)+'</p></div>' : '')+
+      '</article>';
+    }).join('')+'</div>';
+  }
+  function planRenderCoord(rows) {
+    if (!rows.length) return '<div class="plan-empty">Nenhuma ação corresponde aos filtros selecionados.</div>';
+    var desktop = '<div class="coord-table-wrap"><table class="coord-table"><thead><tr>'+
+      '<th>Tema</th><th>Ação e histórico</th><th>Status</th><th>Atualização</th><th>Prazo</th><th>Responsável</th>'+
+      '</tr></thead><tbody>'+rows.map(function(item){
+        return '<tr class="'+(planIsOverdue(item)?'is-overdue':'')+'">'+
+          '<td class="tema">'+planSafe(item.tema)+'</td>'+
+          '<td><details class="coord-details"><summary>'+planSafe((item.acao || '').split(/\n/)[0] || 'Ver ação')+'</summary>'+
+            (item.contexto?'<p><b>Contexto:</b> '+planSafe(item.contexto)+'</p>':'')+
+            '<p>'+planSafe(item.acao)+'</p>'+
+            (item.observacoes?'<p><b>Observações:</b> '+planSafe(item.observacoes)+'</p>':'')+
+          '</details></td>'+
+          '<td>'+planStatusHtml(item)+'</td><td>'+planSafe(item.atualizacao || '—')+'</td>'+
+          '<td>'+planSafe(item.prazo || 'A definir')+'</td><td>'+planSafe(item.responsavel || 'A definir')+'</td>'+
+        '</tr>';
+      }).join('')+'</tbody></table></div>';
+    var mobile = '<div class="coord-mobile">'+rows.map(function(item){
+      return '<article class="coord-mobile-card '+(planIsOverdue(item)?'is-overdue':'')+'">'+
+        '<div class="plan-meta"><b>'+planSafe(item.tema)+'</b>'+planStatusHtml(item)+'</div>'+
+        '<div class="attention-block"><small>Ação e histórico</small><p style="white-space:pre-line">'+planSafe(item.acao)+'</p></div>'+
+        '<div class="plan-meta"><span class="plan-meta-item"><b>Atualização:</b> '+planSafe(item.atualizacao || '—')+'</span>'+
+        '<span class="plan-meta-item"><b>Prazo:</b> '+planSafe(item.prazo || 'A definir')+'</span>'+
+        '<span class="plan-meta-item"><b>Responsável:</b> '+planSafe(item.responsavel || 'A definir')+'</span></div>'+
+      '</article>';
+    }).join('')+'</div>';
+    return desktop + mobile;
+  }
+  function renderPlanoAcao(resetOptions) {
+    planBindControls();
+    var rows = planRows();
+    planUpdateFilters(rows, !!resetOptions);
+    var meeting = PLAN_VIEW === 'attention' ? PLANO_ATENCAO_REUNIAO : PLANO_COORD_REUNIAO;
+    var meetingEl = document.getElementById('plan-meeting-date');
+    if (meetingEl) meetingEl.textContent = meeting || '—';
+    var open = rows.filter(function(r){return planNorm(r.status) !== 'concluido';}).length;
+    var blocked = rows.filter(function(r){return planNorm(r.status) === 'impedido';}).length;
+    var overdue = rows.filter(planIsOverdue).length;
+    var done = rows.filter(function(r){return planNorm(r.status) === 'concluido';}).length;
+    document.getElementById('plan-kpi-open').textContent = open;
+    document.getElementById('plan-kpi-blocked').textContent = blocked;
+    document.getElementById('plan-kpi-overdue').textContent = overdue;
+    document.getElementById('plan-kpi-done').textContent = done;
+    var filtered = planFilteredRows(rows);
+    document.getElementById('plan-content').innerHTML =
+      PLAN_VIEW === 'attention' ? planRenderAttention(filtered) : planRenderCoord(filtered);
+  }
+
+  // ============================================================
+  // ABAS PRINCIPAIS
   // ============================================================
   (function(){
     var tabs = document.querySelectorAll('.main-tab');
-    var panes = { curvas:'tab-curvas', recursos:'tab-recursos', retigrafico:'tab-retigrafico', servicos:'tab-servicos', materiais:'tab-materiais' };
+    var panes = { curvas:'tab-curvas', recursos:'tab-recursos', retigrafico:'tab-retigrafico', servicos:'tab-servicos', materiais:'tab-materiais', plano:'tab-plano' };
     var rendered = { curvas:false, recursos:false, servicos:false };
+    var overlay = document.getElementById('plan-password-overlay');
+    var passwordInput = document.getElementById('plan-password-input');
+    var passwordError = document.getElementById('plan-password-error');
+    var passwordSubmit = document.getElementById('plan-password-submit');
+    var passwordCancel = document.getElementById('plan-password-cancel');
+    var pendingPlanButton = null;
+
+    function activateTab(key, btn) {
+      tabs.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      Object.keys(panes).forEach(function(k){
+        document.getElementById(panes[k]).style.display = (k===key)?'':'none';
+        document.getElementById(panes[k]).classList.toggle('active', k===key);
+      });
+      if (key==='curvas' && !rendered.curvas) { renderCurvas(); rendered.curvas=true; }
+      if (key==='recursos' && !rendered.recursos) { renderRecursos(); rendered.recursos=true; }
+      if (key==='servicos' && !rendered.servicos) { renderServicos(); rendered.servicos=true; }
+      if (key==='plano') renderPlanoAcao(true);
+    }
+    function closePassword() {
+      overlay.classList.remove('open');
+      passwordInput.value = '';
+      passwordError.textContent = '';
+      pendingPlanButton = null;
+    }
+    function requestPlanPassword(btn) {
+      pendingPlanButton = btn;
+      passwordInput.value = '';
+      passwordError.textContent = '';
+      overlay.classList.add('open');
+      setTimeout(function(){ passwordInput.focus(); }, 0);
+    }
+    function submitPlanPassword() {
+      if (btoa(passwordInput.value) !== 'Rmljb0AyMDI2') {
+        passwordError.textContent = 'Senha incorreta. Verifique e tente novamente.';
+        passwordInput.select();
+        return;
+      }
+      var target = pendingPlanButton;
+      overlay.classList.remove('open');
+      passwordInput.value = '';
+      passwordError.textContent = '';
+      pendingPlanButton = null;
+      activateTab('plano', target);
+    }
     tabs.forEach(function(btn){
       btn.addEventListener('click', function(){
-        tabs.forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
         var key = btn.getAttribute('data-tab');
-        Object.keys(panes).forEach(function(k){
-          document.getElementById(panes[k]).style.display = (k===key)?'':'none';
-          document.getElementById(panes[k]).classList.toggle('active', k===key);
-        });
-        if (key==='curvas' && !rendered.curvas) { renderCurvas(); rendered.curvas=true; }
-        if (key==='recursos' && !rendered.recursos) { renderRecursos(); rendered.recursos=true; }
-        if (key==='servicos' && !rendered.servicos) { renderServicos(); rendered.servicos=true; }
+        if (key === 'plano') { requestPlanPassword(btn); return; }
+        activateTab(key, btn);
       });
     });
+    passwordSubmit.addEventListener('click', submitPlanPassword);
+    passwordCancel.addEventListener('click', closePassword);
+    passwordInput.addEventListener('keydown', function(e){
+      if (e.key === 'Enter') submitPlanPassword();
+      if (e.key === 'Escape') closePassword();
+    });
+    overlay.addEventListener('click', function(e){ if (e.target === overlay) closePassword(); });
   })();
 
   // ---- Gráfico de LINHA (curva S) em SVG ----
@@ -3017,7 +3440,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   // sobrescreve o estado do painel antes de chamar renderPanel(). Se uma aba
   // contiver erro de fórmula, o último estado válido daquela seção é preservado.
   // ============================================================
-  var REMOTE_XLSX_URL = "https://raw.githubusercontent.com/automacaofico/super/main/Modelo%20Acompanhamento%20Super%20-%20FINAL.xlsx";
+  var REMOTE_XLSX_URL = "./Modelo%20Acompanhamento%20Super%20-%20FINAL.xlsx";
 
   var MATERIAIS_META = {};
   MATERIAIS.forEach(function(m){ MATERIAIS_META[m.nome] = {icone:m.icone, unidade:m.unidade, destaque:m.destaque}; });
@@ -3248,6 +3671,54 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     return {pedreiras:['Bela Vista','Itapaci','Hochschild'],meses:meses,producao_mes:producaoMes,entrega_mes:entregaMes,previsto_mes:previstoMes,producao_dia:producaoDia,entrega_dia:entregaDia,estoque:estoque};
   }
 
+  function xsDateSerial(v) {
+    if (typeof v === 'number') return v;
+    if (v instanceof Date) return Math.floor(v.getTime() / 86400000) + 25569;
+    return null;
+  }
+  function xsParsePontosAtencao(rows) {
+    if (!rows.length || xsNorm(xsCell(rows,4,1)) !== 'tema') return null;
+    var items = [];
+    for (var r=5; r<=rows.length; r++) {
+      var tema = xsCell(rows,r,1);
+      if (xsIsBlank(tema)) continue;
+      var prazoRaw = xsCell(rows,r,5);
+      items.push({
+        tema: String(tema).trim(),
+        ponto: String(xsCell(rows,r,2) || '').trim(),
+        encaminhamento: String(xsCell(rows,r,3) || '').trim(),
+        responsavel: String(xsCell(rows,r,4) || 'A definir').trim(),
+        prazo: xsFmtDate(prazoRaw),
+        prazoSerial: xsDateSerial(prazoRaw),
+        status: String(xsCell(rows,r,6) || 'Não iniciado').trim(),
+        observacoes: String(xsCell(rows,r,7) || '').trim()
+      });
+    }
+    return { reuniao: xsFmtDate(xsCell(rows,2,2)) || '—', items: items };
+  }
+  function xsParsePlanoCoordenacao(rows) {
+    if (!rows.length || xsNorm(xsCell(rows,4,1)) !== 'tema') return null;
+    var items = [];
+    for (var r=5; r<=rows.length; r++) {
+      var tema = xsCell(rows,r,1);
+      var acao = xsCell(rows,r,3);
+      if (xsIsBlank(tema) || xsIsBlank(acao)) continue;
+      var prazoRaw = xsCell(rows,r,6);
+      items.push({
+        tema: String(tema).trim(),
+        contexto: String(xsCell(rows,r,2) || '').trim(),
+        acao: String(acao).trim(),
+        status: String(xsCell(rows,r,4) || 'Não iniciado').trim(),
+        atualizacao: xsFmtDate(xsCell(rows,r,5)),
+        prazo: xsFmtDate(prazoRaw),
+        prazoSerial: xsDateSerial(prazoRaw),
+        responsavel: String(xsCell(rows,r,7) || 'A definir').trim(),
+        observacoes: String(xsCell(rows,r,8) || '').trim()
+      });
+    }
+    return { reuniao: xsFmtDate(xsCell(rows,2,2)) || '—', items: items };
+  }
+
   function parseXlsxToState(wb){
     var entrada = xsRowsOf(xsFindSheet(wb, "ENTRADA"));
     var materiaisRows = xsRowsOf(xsFindSheet(wb, "MATERIAIS"));
@@ -3256,6 +3727,8 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     var servicosRows = xsRowsOf(xsFindSheet(wb, "SERVIÇOS NOTÁVEIS"));
     var lastroSheet = xsFindSheet(wb, "LASTRO");
     var lastroRows = xsRowsOf(lastroSheet);
+    var pontosRows = xsRowsOf(xsFindSheet(wb, "PONTOS DE ATENÇÃO"));
+    var planoRows = xsRowsOf(xsFindSheet(wb, "PLANO DE AÇÃO"));
     if (!entrada.length) throw new Error("Aba ENTRADA não encontrada na planilha");
 
     // -------- Data de atualização (C10) --------
@@ -3327,11 +3800,15 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if (curvas && detalhe) curvas.detalhe = detalhe;
     var servicos = xsParseServicos(servicosRows);
     var lastro = xsSheetHasErrors(lastroSheet) ? null : xsParseLastro(lastroRows);
+    var pontosAtencao = xsParsePontosAtencao(pontosRows);
+    var planoCoordenacao = xsParsePlanoCoordenacao(planoRows);
     var warnings = [];
     if (!curvas) warnings.push('CURVAS não pôde ser interpretada');
     if (!detalhe) warnings.push('HISTOGRAMA não pôde ser interpretado');
     if (!servicos) warnings.push('SERVIÇOS NOTÁVEIS não pôde ser interpretada');
     if (lastroRows.length && !lastro) warnings.push('LASTRO preservado porque a planilha contém erros de fórmula');
+    if (!pontosAtencao) warnings.push('PONTOS DE ATENÇÃO ausente ou inválida; último conteúdo preservado');
+    if (!planoCoordenacao) warnings.push('PLANO DE AÇÃO ausente ou inválida; último conteúdo preservado');
 
     return {
       dadosData: dadosData,
@@ -3341,6 +3818,8 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       curvas: curvas,
       servicos: servicos,
       lastro: lastro,
+      pontosAtencao: pontosAtencao,
+      planoCoordenacao: planoCoordenacao,
       warnings: warnings
     };
   }
@@ -3366,6 +3845,14 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if (state.lastro) {
       Object.keys(LASTRO_DATA).forEach(function(k){ delete LASTRO_DATA[k]; });
       Object.keys(state.lastro).forEach(function(k){ LASTRO_DATA[k] = state.lastro[k]; });
+    }
+    if (state.pontosAtencao) {
+      PLANO_ATENCAO_DATA = state.pontosAtencao.items;
+      PLANO_ATENCAO_REUNIAO = state.pontosAtencao.reuniao;
+    }
+    if (state.planoCoordenacao) {
+      PLANO_COORD_DATA = state.planoCoordenacao.items;
+      PLANO_COORD_REUNIAO = state.planoCoordenacao.reuniao;
     }
     PACKAGES = buildPackages();
   }
