@@ -2282,35 +2282,39 @@
       const realSegs = (act.real.segments && act.real.segments.length)
         ? act.real.segments
         : [{ kmStart: act.real.kmStart, kmFinal: act.real.kmFinal }];
-      const rX2 = kmToX(act.real.kmFinal);   // fim geral (p/ conector de GAP e rótulo)
-
-      const gReal = el('g', {class:'bar-group', style:'cursor:pointer'});
-      realSegs.forEach((seg, si) => {
-        const sX1 = kmToX(seg.kmStart);
-        const sX2 = kmToX(seg.kmFinal);
-        const sW  = Math.max(sX2 - sX1, 1);
-        gReal.appendChild(el('rect', {
-          x:sX1, y:yReal, width:sW, height:BAR_H,
-          fill:act.color, rx:3, opacity:'0.95',
-          class:'bar-animated', style:`animation-delay:${(i*0.07)+(si*0.05)}s`
-        }));
-        gReal.appendChild(el('rect', {
-          x:sX1, y:yReal, width:sW, height:BAR_H/2,
-          fill:'white', rx:3, opacity:'0.18'
-        }));
-      });
-      // Rótulo do km no fim do último segmento
-      gReal.appendChild(el('text', {
-        x:rX2-4, y:yReal+BAR_H/2,
-        fill:'rgba(255,255,255,0.85)', 'font-family':'DM Mono, monospace',
-        'font-size':'9', 'font-weight':'400',
-        'text-anchor':'end', 'dominant-baseline':'middle',
-        style:'pointer-events:none;user-select:none'
-      }, formatKm(act.real.kmFinal)));
-      gReal.addEventListener('mouseenter', e => showTooltip(e, act));
-      gReal.addEventListener('mousemove',  e => moveTooltip(e));
-      gReal.addEventListener('mouseleave', hideTooltip);
-      barsG.appendChild(gReal);
+      const temExecucao = realSegs.some(seg => seg.kmFinal > seg.kmStart);
+      if (temExecucao) {
+        const rX2 = kmToX(act.real.kmFinal);   // fim geral (p/ conector de GAP e rótulo)
+        const gReal = el('g', {class:'bar-group', style:'cursor:pointer'});
+        realSegs.forEach((seg, si) => {
+          if (seg.kmFinal <= seg.kmStart) return;
+          const sX1 = kmToX(seg.kmStart);
+          const sX2 = kmToX(seg.kmFinal);
+          const sW  = Math.max(sX2 - sX1, 1);
+          gReal.appendChild(el('rect', {
+            x:sX1, y:yReal, width:sW, height:BAR_H,
+            fill:act.color, rx:3, opacity:'0.95',
+            class:'bar-animated', style:`animation-delay:${(i*0.07)+(si*0.05)}s`
+          }));
+          gReal.appendChild(el('rect', {
+            x:sX1, y:yReal, width:sW, height:BAR_H/2,
+            fill:'white', rx:3, opacity:'0.18'
+          }));
+        });
+        // Rótulo do km no fim do último segmento. Não renderiza para 0+000,
+        // pois ele se sobrepõe ao percentual em atividades sem execução.
+        gReal.appendChild(el('text', {
+          x:rX2-4, y:yReal+BAR_H/2,
+          fill:'rgba(255,255,255,0.85)', 'font-family':'DM Mono, monospace',
+          'font-size':'9', 'font-weight':'400',
+          'text-anchor':'end', 'dominant-baseline':'middle',
+          style:'pointer-events:none;user-select:none'
+        }, formatKm(act.real.kmFinal)));
+        gReal.addEventListener('mouseenter', e => showTooltip(e, act));
+        gReal.addEventListener('mousemove',  e => moveTooltip(e));
+        gReal.addEventListener('mouseleave', hideTooltip);
+        barsG.appendChild(gReal);
+      }
 
       // (conector de GAP removido junto com a barra de Planejado)
 
@@ -3734,8 +3738,9 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     // -------- Data de atualização (C10) --------
     var dadosData = xsFmtDate(xsCell(entrada, 10, 3)) || DADOS_DATA;
 
-    // -------- Atividades simples (linhas 14-24 aprox., B=nome, C=KM Real) --------
+    // -------- Atividades simples (linhas 14-27 aprox., B=nome, C/D em pares KM início/final) --------
     var real = {};
+    var atividadesEncontradas = {};
     for (var r=13; r<=30; r++){
       var nome = xsCell(entrada, r, 2);
       if (xsIsBlank(nome)) continue;
@@ -3743,10 +3748,32 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       if (xsNorm(nome).indexOf('liber') !== -1) continue;     // Liberação: tratada à parte (trechos)
       var alvo = xsMatchAtividade(nome);
       if (!alvo) continue;
-      var kmReal = xsCell(entrada, r, 3);
-      if (xsIsBlank(kmReal) || typeof kmReal !== 'number') continue;
-      var base = REAL_ATIVIDADES[alvo] || {kmStart:0};
-      real[alvo] = { kmStart: base.kmStart, kmFinal: xsNum(kmReal) };
+      atividadesEncontradas[alvo] = true;
+
+      // A planilha atual registra cada trecho como um par de colunas
+      // "KM INÍCIO" / "KM FINAL" (C/D, E/F, ...). A versão anterior lia
+      // apenas C como se fosse o KM final, convertendo vários trechos 0→X
+      // em execução zero e descartando os trechos descontínuos.
+      var segmentos = [];
+      var totalColunas = (entrada[r-1] || []).length;
+      for (var c=3; c<totalColunas; c+=2){
+        var iniAtividade = xsCell(entrada, r, c);
+        var fimAtividade = xsCell(entrada, r, c+1);
+        if (typeof iniAtividade !== 'number' || typeof fimAtividade !== 'number') continue;
+        var iniNum = xsNum(iniAtividade), fimNum = xsNum(fimAtividade);
+        if (fimNum > iniNum) segmentos.push({ kmStart:iniNum, kmFinal:fimNum });
+      }
+      if (segmentos.length){
+        real[alvo] = {
+          kmStart: Math.min.apply(null, segmentos.map(function(s){ return s.kmStart; })),
+          kmFinal: Math.max.apply(null, segmentos.map(function(s){ return s.kmFinal; })),
+          segments: segmentos
+        };
+      } else {
+        // Zera explicitamente a atividade encontrada, evitando exibir um
+        // fallback antigo quando a planilha informa que ainda não há execução.
+        real[alvo] = { kmStart:0, kmFinal:0 };
+      }
     }
 
     // -------- Liberação de plataforma: trechos realizados (até 8 linhas) --------
@@ -3803,6 +3830,12 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     var pontosAtencao = xsParsePontosAtencao(pontosRows);
     var planoCoordenacao = xsParsePlanoCoordenacao(planoRows);
     var warnings = [];
+    ATIVIDADES_DEF.forEach(function(atividade){
+      if (atividade.nome === 'Liberação de plataforma' || atividadesEncontradas[atividade.nome]) return;
+      // Não mantém valores estáticos antigos quando a linha não existe no Excel.
+      real[atividade.nome] = { kmStart:0, kmFinal:0 };
+      warnings.push(atividade.nome + ' não foi encontrada na aba ENTRADA');
+    });
     if (!curvas) warnings.push('CURVAS não pôde ser interpretada');
     if (!detalhe) warnings.push('HISTOGRAMA não pôde ser interpretado');
     if (!servicos) warnings.push('SERVIÇOS NOTÁVEIS não pôde ser interpretada');
