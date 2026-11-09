@@ -2328,11 +2328,16 @@
         });
         // Rótulo do km no fim do último segmento. Não renderiza para 0+000,
         // pois ele se sobrepõe ao percentual em atividades sem execução.
+        // Se o último segmento é curto demais para caber o texto, o rótulo vai
+        // para a direita da barra, em cor escura (legível sobre o fundo claro).
+        const ultSeg = realSegs.reduce((m, sg) => (sg.kmFinal > m.kmFinal ? sg : m), realSegs[0]);
+        const wUlt = kmToX(ultSeg.kmFinal) - kmToX(ultSeg.kmStart);
+        const rotFora = wUlt < 44;
         gReal.appendChild(el('text', {
-          x:rX2-4, y:yReal+BAR_H/2,
-          fill:'rgba(255,255,255,0.85)', 'font-family':'DM Mono, monospace',
-          'font-size':'9', 'font-weight':'400',
-          'text-anchor':'end', 'dominant-baseline':'middle',
+          x: rotFora ? rX2+5 : rX2-4, y:yReal+BAR_H/2,
+          fill: rotFora ? act.color : 'rgba(255,255,255,0.92)', 'font-family':'DM Mono, monospace',
+          'font-size':'9', 'font-weight': rotFora ? '600' : '400',
+          'text-anchor': rotFora ? 'start' : 'end', 'dominant-baseline':'middle',
           style:'pointer-events:none;user-select:none'
         }, formatKm(act.real.kmFinal)));
         gReal.addEventListener('mouseenter', e => showTooltip(e, act));
