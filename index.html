@@ -1387,7 +1387,6 @@
   // ============================================================
   const ATIVIDADES_DEF = [
     { nome: "Liberação de plataforma",   color: '#1a7a3a', planejado: { kmStart:0,     kmFinal:104500 } },
-    { nome: "Pré lastro em plataforma",  color: '#005a8a', planejado: { kmStart:71300, kmFinal:78400  } },
     { nome: "Montagem de grade",         color: '#1a5fa8', planejado: { kmStart:0,     kmFinal:87337  } },
     { nome: "1ª Descarga de brita",      color: '#b87800', planejado: { kmStart:0,     kmFinal:80253  } },
     { nome: "Socaria - 1º levante",      color: '#c04a00', planejado: { kmStart:0,     kmFinal:71300  } },
@@ -1396,6 +1395,12 @@
     { nome: "Socaria - 3º levante",      color: '#6b3db5', planejado: { kmStart:0,     kmFinal:71300  } },
     { nome: "Socaria - 4º levante",      color: '#1178a0', planejado: { kmStart:0,     kmFinal:67283  } },
     { nome: "3ª Descarga de brita",      color: '#665500', planejado: { kmStart:0,     kmFinal:75776  } },
+    { nome: "Socaria - 5º levante",      color: '#b0357a', planejado: { kmStart:0,     kmFinal:67283  } },
+    // Atividades NÃO PREVISTAS no planejamento original (marcadas com "!" no unifilar).
+    { nome: "4º Descarga de brita",      color: '#9a6b12', planejado: { kmStart:0, kmFinal:0 }, naoPrevista: true },
+    { nome: "Socaria - 6º levante",      color: '#0f7f86', planejado: { kmStart:0, kmFinal:0 }, naoPrevista: true },
+    { nome: "5º Descarga de brita",      color: '#7a5a1e', planejado: { kmStart:0, kmFinal:0 }, naoPrevista: true },
+    { nome: "6º Descarga de brita",      color: '#5c4a20', planejado: { kmStart:0, kmFinal:0 }, naoPrevista: true },
     { nome: "Alívio de tensão",          color: '#2a8a50', planejado: { kmStart:0,     kmFinal:52948  } },
   ];
 
@@ -1403,7 +1408,6 @@
   // automática a partir da aba ENTRADA da planilha sobrescreve isto).
   let REAL_ATIVIDADES = {
     "Liberação de plataforma":  { kmStart:0,     kmFinal:80240, segments:[{kmStart:0,kmFinal:80240}] },
-    "Pré lastro em plataforma": { kmStart:71300, kmFinal:78400 },
     "Montagem de grade":        { kmStart:0,     kmFinal:56145 },
     "1ª Descarga de brita":     { kmStart:0,     kmFinal:38760 },
     "Socaria - 1º levante":     { kmStart:0,     kmFinal:38760 },
@@ -1412,6 +1416,11 @@
     "Socaria - 3º levante":     { kmStart:0,     kmFinal:19480 },
     "Socaria - 4º levante":     { kmStart:0,     kmFinal:19000 },
     "3ª Descarga de brita":     { kmStart:0,     kmFinal:19000 },
+    "Socaria - 5º levante":     { kmStart:0,     kmFinal:0 },
+    "4º Descarga de brita":     { kmStart:0,     kmFinal:0 },
+    "Socaria - 6º levante":     { kmStart:0,     kmFinal:0 },
+    "5º Descarga de brita":     { kmStart:0,     kmFinal:0 },
+    "6º Descarga de brita":     { kmStart:0,     kmFinal:0 },
     "Alívio de tensão":         { kmStart:0,     kmFinal:6780  },
   };
 
@@ -1424,7 +1433,7 @@
     return ATIVIDADES_DEF.map(function(def){
       var r = REAL_ATIVIDADES[def.nome] || { kmStart:0, kmFinal:0 };
       var out = {
-        name: def.nome, color: def.color,
+        name: def.nome, color: def.color, naoPrevista: !!def.naoPrevista,
         real:      { kmStart:r.kmStart, kmFinal:r.kmFinal, pct: pctObra(r.kmFinal) },
         planejado: { kmStart:def.planejado.kmStart, kmFinal:def.planejado.kmFinal, pct: pctObra(def.planejado.kmFinal) }
       };
@@ -2003,6 +2012,7 @@
         ${hasData ? `
         <div class="legend">
           <div class="legend-item"><span class="lg-swatch lg-real"></span> Real (executado)</div>
+          <div class="legend-item"><span style="display:inline-flex;width:14px;height:14px;border-radius:50%;background:#f59e0b;color:#fff;font:700 10px/14px sans-serif;justify-content:center">!</span> Atividade não prevista</div>
         </div>` : ''}
         <div class="diagram-scroll" id="scroll-${pkg.id}"></div>
         ${plannedNote}
@@ -2239,6 +2249,23 @@
           barsG.appendChild(g);
         });
         return;  // não desenha barras normais nesta linha
+      }
+
+      // Atividade NÃO PREVISTA: contorno laranja tracejado + selo "!"
+      if (act.naoPrevista) {
+        const gNp = el('g', {class:'np-mark'});
+        gNp.appendChild(el('rect', {
+          x:PAD_L-4, y:cy-ROW_H/2+2, width:TRACK_X+TRACK_W-PAD_L+8, height:ROW_H-4,
+          rx:(ROW_H-4)/2, fill:'rgba(245,158,11,0.06)', stroke:'#f59e0b',
+          'stroke-width':1.6, 'stroke-dasharray':'5 3', 'pointer-events':'none'
+        }));
+        gNp.appendChild(el('circle', {cx:TRACK_X+TRACK_W+22, cy:cy, r:8, fill:'#f59e0b'}));
+        gNp.appendChild(el('text', {
+          x:TRACK_X+TRACK_W+22, y:cy+1, fill:'#fff', 'font-family':'DM Sans, sans-serif',
+          'font-size':'11', 'font-weight':'700', 'text-anchor':'middle', 'dominant-baseline':'middle'
+        }, '!'));
+        const tt = el('title'); tt.textContent = 'Atividade não prevista no planejamento'; gNp.appendChild(tt);
+        labelsG.appendChild(gNp);
       }
 
       // Real centralizado na linha (Planejado removido do diagrama)
@@ -3745,6 +3772,15 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       if (xsNorm(nome).indexOf('atividade') !== -1) continue; // linha de cabeçalho
       if (xsNorm(nome).indexOf('liber') !== -1) continue;     // Liberação: tratada à parte (trechos)
       var alvo = xsMatchAtividade(nome);
+      if (!alvo && /(descarga|levante)/.test(xsNorm(nome))) {
+        // Atividade nova na ENTRADA (ex.: 7º levante, 7ª descarga): entra sozinha,
+        // como não prevista, antes do Alívio de tensão.
+        var corNova = ['#a14f8f','#3f7f5a','#8a4b2a','#2f6f9f','#7a7a2a','#9f3f4f'][ATIVIDADES_DEF.length % 6];
+        var idxAl = ATIVIDADES_DEF.findIndex(function(d){ return d.nome === 'Alívio de tensão'; });
+        var novaDef = { nome: nome.toString().trim(), color: corNova, planejado: { kmStart:0, kmFinal:0 }, naoPrevista: true };
+        ATIVIDADES_DEF.splice(idxAl < 0 ? ATIVIDADES_DEF.length : idxAl, 0, novaDef);
+        alvo = novaDef.nome;
+      }
       if (!alvo) continue;
       atividadesEncontradas[alvo] = true;
 
@@ -3789,7 +3825,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 
     // -------- Pré-lastro em colchão drenante (até 17 linhas) --------
     var prelastro = [];
-    for (var rp=41; rp<=60; rp++){
+    for (var rp=41; rp<=entrada.length; rp++){
       var pini = xsCell(entrada, rp, 3), pfim = xsCell(entrada, rp, 4);
       if (xsIsBlank(pini) || xsIsBlank(pfim) || typeof pini !== 'number' || typeof pfim !== 'number') continue;
       var status = (xsCell(entrada, rp, 5) || '').toString().trim().toUpperCase();
