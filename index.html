@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unifilar FICO — Acompanhamento de Grade Ferroviária</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -1275,6 +1276,133 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
     }
+  </style>
+  <style id="redesign-b">
+/* ============================================================
+   REDESIGN B — Editorial FICO
+   Camada só de aparência: não altera HTML nem JavaScript.
+   Todas as interações (abas, pacotes, tooltips, painel de detalhe,
+   filtros, senha do Plano de Ação, sincronização, Lottie) continuam iguais.
+   Texto dentro dos SVGs (unifilar, curvas) mantém a fonte original
+   para não estourar as caixas calculadas pelo JavaScript.
+   ============================================================ */
+:root {
+  --ink: #1b2433;
+  --ink-soft: #44566b;
+  --muted: #6b7a90;
+  --line: #e4e8ee;
+  --soft: #f7f9fc;
+  --r-card: 8px;
+  --r-big: 36px;
+  --font: 'Montserrat', 'DM Sans', system-ui, sans-serif;
+}
+
+body { background: #fff; color: var(--ink); font-family: var(--font); }
+body :where(button, input, select, textarea, label, td, th, p, span, div, a, b, strong, small, h1, h2, h3, h4, summary):not(svg *) { font-family: var(--font); }
+body :where(.mr-num, .kpi-delta, .ct-v, .rt-v, .rt-sub, .rt-chip, .pkg-prog-top b, .plan-meeting b) { font-variant-numeric: tabular-nums; }
+
+/* ── barra de sincronização: discreta ── */
+#xlsx-sync-bar { background: #fff !important; border-bottom: 1px solid var(--line) !important; color: var(--muted) !important; font-size: 11.5px !important; padding: 6px 36px !important; }
+#xlsx-sync-bar button, #xlsx-sync-bar a { border-radius: 14px !important; border-color: var(--line) !important; color: var(--blue-dark) !important; font-family: var(--font) !important; font-weight: 600 !important; }
+#xlsx-sync-upload-label { color: var(--blue-dark) !important; }
+
+/* ── cabeçalho: bloco laranja com um canto bem arredondado + pílula azul ── */
+.header { background: #fff; border-bottom: 0; overflow: visible; }
+.header::before { content: ''; display: block; height: 10px; background: linear-gradient(90deg, var(--blue) 0 72%, var(--orange) 72% 100%); }
+.header-band { background: none; padding: 0; align-items: stretch; gap: 24px; }
+.header-top { flex: 0 1 auto; background: var(--orange); border-radius: 0 0 96px 0; padding: 28px 84px 28px 36px; position: relative; }
+.logo-area { gap: 24px; position: relative; padding-left: 28px; }
+.logo-area::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 14px; height: 62px; border-radius: 7px; background: var(--blue); }
+.logo-badge { background: none; box-shadow: none; padding: 0; border-radius: 0; }
+.logo-badge img, .logo-badge .logo-lottie { filter: brightness(0) invert(1); }
+.logo-badge img { height: 56px; }
+.logo-badge .logo-lottie { height: 84px; }
+.eyebrow { color: #fff; font-size: 10.5px; font-weight: 600; letter-spacing: .16em; opacity: .95; margin-bottom: 8px; }
+h1 { font-family: var(--font); font-weight: 600; font-size: clamp(22px, 2.4vw, 32px); letter-spacing: -.01em; line-height: 1.1; color: #fff; }
+.ref-badge { background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.55); font-family: var(--font); font-weight: 600; letter-spacing: .04em; margin-top: 12px; }
+.ref-badge b { color: #fff; }
+.contract-block { background: none; border: 0; border-radius: 0; padding: 30px 40px 0 0; min-width: 300px; gap: 6px 18px; align-self: flex-start; }
+.contract-block .ct-k { color: var(--muted); font-size: 10.5px; letter-spacing: .1em; text-align: right; }
+.contract-block .ct-v { color: var(--ink); font-family: var(--font); font-size: 12.5px; font-weight: 600; text-align: left; }
+
+/* ── KPIs: números grandes, sem caixas ── */
+.kpi-strip { gap: 0; padding: 26px 36px 8px; background: #fff; }
+.tab-pane, .tab-inner, .serv-block, .materials, .packages-nav { background: transparent; }
+.kpi-card { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 4px 32px 4px 0; margin-right: 32px; border-right: 1px solid var(--line); }
+.kpi-card:last-child { border-right: 0; margin-right: 0; }
+.kpi-card::before { display: none; }
+.kpi-label { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .14em; }
+.kpi-value { font-family: var(--font); font-weight: 600; font-size: 48px; letter-spacing: -.02em; color: var(--blue); }
+.kpi-card[data-kpi="financeiro"] .kpi-value { color: var(--orange); }
+.kpi-card[data-kpi="prazo"] .kpi-value { color: var(--ink); }
+.kpi-bar { height: 5px; background: var(--line); border-radius: 3px; }
+.kpi-bar i { border-radius: 3px; }
+.kpi-foot { color: var(--muted); font-size: 12px; }
+.kpi-delta { font-family: var(--font); font-weight: 700; font-size: 11.5px; border-radius: 12px; }
+@media (max-width: 900px) {
+  .header-top { border-radius: 0 0 64px 0; padding: 22px 48px 22px 20px; }
+  .contract-block { padding: 16px 20px 0; }
+  .contract-block .ct-k { text-align: left; }
+  .kpi-strip { padding: 18px 20px 4px; }
+  .kpi-card { border-right: 0; border-bottom: 1px solid var(--line); margin-right: 0; padding: 10px 0 16px; }
+  .kpi-card:last-child { border-bottom: 0; }
+  .kpi-value { font-size: 40px; }
+}
+
+/* ── aviso de frequência ── */
+.update-policy { background: #fff8ee; border: 0; border-radius: 6px 6px 6px 28px; margin: 14px 36px 4px; padding: 10px 22px; }
+.update-policy-icon { background: var(--orange); }
+@media (max-width: 720px) { .update-policy { margin: 12px 20px 4px; } }
+
+/* ── abas principais ── */
+.main-tabs { background: #fff; border-bottom: 1px solid var(--line); padding: 16px 36px; gap: 10px; }
+.main-tab { border-radius: 8px; border: 1px solid var(--line); background: #fff; color: var(--ink-soft); font-family: var(--font); font-weight: 600; box-shadow: none; }
+.main-tab:hover:not(.active) { background: var(--soft); border-color: #cfd8e4; }
+.main-tab .tnum { background: #e8eef7; color: var(--blue-dark); }
+.main-tab.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 6px 18px rgba(53,120,188,.28); border-radius: 8px 8px 8px 22px; }
+.main-tab.active .tnum { background: var(--orange); color: #fff; }
+.main-tab .update-cadence { background: var(--soft); border-color: var(--line); color: var(--muted); font-family: var(--font); }
+.main-tab .update-cadence.daily { background: #eaf7ef; border-color: #b9e0c9; color: #1f7a45; }
+.main-tab.active .update-cadence { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.45); color: #fff; }
+@media (max-width: 720px) { .main-tabs { padding: 12px 20px; } }
+
+/* ── pacotes ── */
+.packages-nav { background: #fff; }
+.pkg-card { border-radius: 8px 28px 8px 8px; border-color: var(--line); box-shadow: none; font-family: var(--font); }
+.pkg-card:hover { border-color: #b9cbe0; box-shadow: 0 8px 22px rgba(31,78,121,.1); }
+.pkg-card.active { border-color: var(--blue); background: #f3f8fe; box-shadow: 0 8px 24px rgba(53,120,188,.16); }
+.pkg-prog-bar, .pkg-progress-track { background: var(--line); }
+
+.pkg-number, .summary-card .card-value, .pkg-progress-pct, .mat-pct, .plan-kpi strong, .plan-heading-copy h2, .password-dialog h2 { font-family: var(--font); font-weight: 700; letter-spacing: 0; }
+.pkg-number { font-size: 17px; }
+
+.diagram-scroll { border: 1px solid var(--line); border-radius: 8px 8px 8px 56px; background: #f8fafc; }
+
+/* ── cards em geral: cantos da marca ── */
+.chart-card, .res-card, .mat-card, .serv-card, .lastro-card, .summary-card, .plan-kpi, .attention-card, .coord-table-wrap, .coord-mobile-card, .inconsistencies, .no-data {
+  border: 1px solid var(--line); border-radius: var(--r-card) var(--r-big) var(--r-card) var(--r-card); box-shadow: none;
+}
+.mat-card:hover { box-shadow: 0 10px 26px rgba(31,78,121,.12); }
+.section-title { font-family: var(--font); font-weight: 700; letter-spacing: .1em; color: var(--ink); }
+.serv-block { border-top: 1px solid var(--line); }
+.serv-tab { border-radius: 8px; border-color: var(--line); font-family: var(--font); }
+.serv-tab.active { background: var(--orange); border-color: var(--orange); border-radius: 8px 8px 8px 20px; }
+.serv-tbl thead th, .mat-tbl th, .coord-table th { background: var(--soft); color: var(--blue-dark); }
+.plan-subtab { border-radius: 8px; font-family: var(--font); }
+.plan-subtab.active { border-radius: 8px 8px 8px 20px; }
+.plan-control input, .plan-control select, .password-dialog input { border-radius: 8px; font-family: var(--font); }
+.password-dialog { border-radius: 10px 44px 10px 10px; }
+.password-submit { background: var(--blue); border-color: var(--blue) !important; }
+
+/* ── tooltips e painel de detalhe: mesma identidade ── */
+.rtip { border-radius: 8px 22px 8px 8px; font-family: var(--font); }
+.rtip .rt-title { font-family: var(--font); font-weight: 700; letter-spacing: 0; }
+.detail-panel { border-radius: 10px 40px 10px 10px; }
+.detail-title { font-family: var(--font); }
+
+/* ── rodapé ── */
+footer { background: #fff; }
+.footer-inner { color: var(--muted); font-family: var(--font); }
   </style>
 </head>
 <body>
